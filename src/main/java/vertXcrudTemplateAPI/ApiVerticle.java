@@ -41,6 +41,19 @@ public class ApiVerticle  extends AbstractVerticle{
 	    
 	    router.post("/recieveLog").handler(this::handleLog);
 	    
+	    
+	    vertx.createHttpServer()
+        .requestHandler(router)
+        .listen(Integer.parseInt(config().getString("server_port")),config().getString("server_ip")
+        		, res -> {
+          if (res.succeeded()) {
+            System.out.println("✔  CRUD API listening ...");
+            startPromise.complete();
+          } else {
+            startPromise.fail(res.cause());
+          }
+        });
+	    
 	}
 	
 	
